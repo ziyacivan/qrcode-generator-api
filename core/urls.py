@@ -10,5 +10,5 @@ urlpatterns = [
     path('api/v1/login/', LoginView.as_view()),
     path('api/v1/logout/', LogoutView.as_view()),
 
-    path('api/v1/profile', ProfileView.as_view()),
+    path('api/v1/profile/', ProfileView.as_view()),
 ]

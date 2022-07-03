@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    'users'
+    'users',
+    'qrcodes'
 ]
 
 AUTH_USER_MODEL = 'users.User'

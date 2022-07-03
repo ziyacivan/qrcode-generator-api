@@ -5,6 +5,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=255)
     email = models.EmailField(max_length=254, unique=True)
+    is_online = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']

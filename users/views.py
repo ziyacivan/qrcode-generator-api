@@ -1,10 +1,13 @@
 from django.contrib.auth.hashers import check_password
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from users.models import User
 
 class RegisterView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         try:
             username = request.data['username']
@@ -26,6 +29,8 @@ class RegisterView(APIView):
 
 
 class LoginView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         try:
             username = request.data['username']
@@ -43,3 +48,15 @@ class LoginView(APIView):
             
         except KeyError:
             return Response({'error': 'Missing username or password'})
+
+
+class LogoutView(APIView):
+    def post(self, request):
+        try:
+            user = User.objects.get(id=request.user.id)
+            user.is_online = False
+            user.save()
+            Token.objects.get(user_id=user.id).delete()
+            return Response({'success': 'You have successfully logged out'})
+        except User.DoesNotExist:
+            return Response({'error': 'Invalid user'})

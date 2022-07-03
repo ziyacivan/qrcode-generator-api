@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from users.models import User
+from users.serializers import UserSerializer
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -40,7 +41,10 @@ class LoginView(APIView):
                 user = User.objects.get(username=username)
                 if check_password(password, user.password) is True:
                     token = Token.objects.get_or_create(user=user)
-                    return Response({'token': token[0].key})
+                    serializer = UserSerializer(user)
+                    user.is_online = True
+                    user.save()
+                    return Response({'success': 'You have successfully logged in', 'token': token[0].key, 'user': serializer.data})
                 else:
                     return Response({'error': 'Invalid password'})
             except User.DoesNotExist:

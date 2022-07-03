@@ -6,7 +6,7 @@ from qrcodes.models import QRCode
 class QRCodeSerializer(ModelSerializer):
     class Meta:
         model = QRCode
-        exclude = ('id', 'file_name', 'owner')
+        exclude = ('file_name', 'owner')
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

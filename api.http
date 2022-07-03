@@ -37,3 +37,8 @@ Authorization: Token b550062d5fc3b81dda4c8287424c6bc0f8e6d5cb
     "description": "Test QR Code Description",
     "url": "http://www.google.com"
 }
+
+// QR Code List
+GET http://localhost:8000/api/v1/qrcodes/
+Content-Type: application/json
+Authorization: Token b550062d5fc3b81dda4c8287424c6bc0f8e6d5cb

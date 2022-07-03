@@ -45,3 +45,13 @@ class GenerateCodeView(APIView):
                 return Response({'success': 'You have successfully generated QR Code', 'data': serializer.data})
         except KeyError:
             return Response({'error': 'Missing name or description or url'})
+
+
+class QRCodeListView(APIView):
+    def get(self, request):
+        try:
+            qrcodes = QRCode.objects.filter(owner_id=request.user.id)
+            serializer = QRCodeSerializer(qrcodes, many=True)
+            return Response(serializer.data)
+        except QRCode.DoesNotExist:
+            return Response({'error': 'You have no QR Codes'})

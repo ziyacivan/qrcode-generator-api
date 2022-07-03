@@ -1,6 +1,47 @@
+import os
+import qrcode
+import random
+from core.settings import BASE_DIR
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from qrcodes.models import QRCode
+from qrcodes.serializers import QRCodeSerializer
 
 class GenerateCodeView(APIView):
-    def get(self, request):
-        return Response({'code': '123'})
+    def post(self, request):
+        try:
+            name = request.data['name']
+            description = request.data['description']
+            url = request.data['url']
+
+            try:
+                QRCode.objects.get(name=name)
+                return Response({'error': 'QR Code with this name already exists'})
+            except QRCode.DoesNotExist:
+                qr = qrcode.QRCode(
+                    version=1,
+                    error_correction=qrcode.ERROR_CORRECT_L,
+                    box_size=10,
+                    border=4
+                )
+                qr.add_data(url)
+                qr.make(fit=True)
+
+                img = qr.make_image(back_color=(255, 255, 255), fill_color=(16, 16, 16))
+
+                file_name = random.randint(111111111, 999999999)
+                file_name = str(file_name) + '.png'
+                path = os.path.join(BASE_DIR, 'qrcodes', 'images', file_name)
+                img.save(path)
+                instance = QRCode(
+                    owner_id=request.user.id,
+                    name=name,
+                    description=description,
+                    url=url,
+                    file_name=file_name
+                )
+                instance.save()
+                serializer = QRCodeSerializer(instance)
+                return Response({'success': 'You have successfully generated QR Code', 'data': serializer.data})
+        except KeyError:
+            return Response({'error': 'Missing name or description or url'})

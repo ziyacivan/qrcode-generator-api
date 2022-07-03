@@ -6,7 +6,7 @@ class QRCode(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     url = models.URLField(max_length=200)
-    image = models.ImageField(upload_to='qrcodes/images/')
+    file_name = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

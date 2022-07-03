@@ -27,3 +27,13 @@ GET http://localhost:8000/api/v1/profile/
 Content-Type: application/json
 Authorization: Token b550062d5fc3b81dda4c8287424c6bc0f8e6d5cb
 
+// Generate Code
+POST http://localhost:8000/api/v1/qrcodes/generate/
+Content-Type: application/json
+Authorization: Token b550062d5fc3b81dda4c8287424c6bc0f8e6d5cb
+
+{
+    "name": "test qr code",
+    "description": "Test QR Code Description",
+    "url": "http://www.google.com"
+}

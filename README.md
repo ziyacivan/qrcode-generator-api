@@ -5,20 +5,13 @@ I needed a QR Code for my cat's vet last week. I found a website for code genera
 
 There are want a package from me and it is so expensive in my country. I thought about it, how can I generate a completely free QR Code? I researched it and I did.
 
-QR Code Generator API is written in Python/Django and Django Rest Framework. I started developing the app on Sunday.
+QR Code Generator API is written in Python/Django and Django Rest Framework.
 
-I have a little TODO list for other versions and after I will complete the app with React App.
+I have a little TODO list for other versions.
 
 **Todo List:**
 - Add different data types like rgb and rgba codes for gradient QR Code generating.
 - Add update endpoint for created QR Codes and re-generate qr code function.
-- Create a React App
-    - Login Page
-    - Register Page
-    - Profile Page, Update Password and Change Email features
-    - Generate QR Code Page
-    - List Codes Page
-    - Update Generate Code Page
 
 ## Requirements
 - Python 3.x

@@ -1,6 +1,8 @@
 import os
 import qrcode
 import random
+from pathlib import Path
+from django.core.files import File
 from core.settings import BASE_DIR
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -31,16 +33,22 @@ class GenerateCodeView(APIView):
 
                 file_name = random.randint(111111111, 999999999)
                 file_name = str(file_name) + '.png'
-                path = os.path.join(BASE_DIR, 'qrcodes', 'images', file_name)
+                path = os.path.join(BASE_DIR, 'qrcodes', 'tmp', file_name)
                 img.save(path)
                 instance = QRCode(
                     owner_id=request.user.id,
                     name=name,
                     description=description,
-                    url=url,
-                    file_name=file_name
+                    url=url
                 )
-                instance.save()
+
+                path = Path(path)
+                with path.open(mode='rb') as f:
+                    instance.file = File(f, name=file_name)
+                    instance.save()
+
+                os.remove(path)
+
                 serializer = QRCodeSerializer(instance)
                 return Response({'success': 'You have successfully generated QR Code', 'data': serializer.data})
         except KeyError:
@@ -55,3 +63,13 @@ class QRCodeListView(APIView):
             return Response(serializer.data)
         except QRCode.DoesNotExist:
             return Response({'error': 'You have no QR Codes'})
+
+
+class QRCodeDetailView(APIView):
+    def get(self, request, pk=None):
+        try:
+            qrcode = QRCode.objects.get(pk=pk, owner_id=request.user.id)
+            serializer = QRCodeSerializer(qrcode)
+            return Response(serializer.data)
+        except QRCode.DoesNotExist:
+            return Response({'error': 'QR Code does not exist'})

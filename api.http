@@ -33,9 +33,9 @@ Content-Type: application/json
 Authorization: Token b550062d5fc3b81dda4c8287424c6bc0f8e6d5cb
 
 {
-    "name": "test qr code 4",
-    "description": "Test QR Code Description",
-    "url": "http://www.google.com"
+    "name": "QRCode Generator",
+    "description": "This is a QRCode generator app",
+    "url": "https://github.com/ziyacivan/qrcode-generator-api"
 }
 
 // QR Code List

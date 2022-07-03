@@ -64,3 +64,13 @@ class LogoutView(APIView):
             return Response({'success': 'You have successfully logged out'})
         except User.DoesNotExist:
             return Response({'error': 'Invalid user'})
+
+
+class ProfileView(APIView):
+    def get(self, request):
+        try:
+            user = User.objects.get(id=request.user.id)
+            serializer = UserSerializer(user)
+            return Response({'user': serializer.data})
+        except User.DoesNotExist:
+            return Response({'error': 'Invalid user'})
